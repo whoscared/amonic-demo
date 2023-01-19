@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -44,12 +45,12 @@ public class Person {
     @Size(min = 2, max = 50, message = "Firstname cannot be more than 50 characters")
     private String firstname;
     @Column(name = "birthdate")
-    @NotEmpty
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date birthdate;
     @OneToMany(mappedBy = "person")
     private List<Activity> activity;
 
-    private String timeOnSystem;
+    //private String timeOnSystem;
 
     public Person() {
     }
@@ -136,11 +137,5 @@ public class Person {
         this.access = access;
     }
 
-    public String getTimeOnSystem() {
-        return timeOnSystem;
-    }
 
-    public void setTimeOnSystem(String timeOnSystem) {
-        this.timeOnSystem = timeOnSystem;
-    }
 }

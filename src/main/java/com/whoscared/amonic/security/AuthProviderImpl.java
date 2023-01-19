@@ -24,11 +24,14 @@ public class AuthProviderImpl implements AuthenticationProvider {
     private final ActivityRepository activityRepository;
     private final PersonDetailService personDetailService;
 
+    private final Md5PasswordEncoder md5PasswordEncoder;
+
     @Autowired
-    public AuthProviderImpl(PersonRepository personRepository, ActivityRepository activityRepository, PersonDetailService personDetailService) {
+    public AuthProviderImpl(PersonRepository personRepository, ActivityRepository activityRepository, PersonDetailService personDetailService, Md5PasswordEncoder md5PasswordEncoder) {
         this.personRepository = personRepository;
         this.activityRepository = activityRepository;
         this.personDetailService = personDetailService;
+        this.md5PasswordEncoder = md5PasswordEncoder;
     }
 
 
@@ -45,8 +48,8 @@ public class AuthProviderImpl implements AuthenticationProvider {
         UserDetails personDetails = personDetailService.loadUserByUsername(username);
 
         String password = authentication.getCredentials().toString();
-        if (!password.equals(personDetails.getPassword())) {
-            throw new BadCredentialsException("Incorrect password!hey");
+        if (!md5PasswordEncoder.matches(password, personDetails.getPassword())) {
+            throw new BadCredentialsException("Incorrect password!");
         }
 
         Activity tempActivity = new Activity();

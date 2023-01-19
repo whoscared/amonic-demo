@@ -16,10 +16,10 @@ public class RoleService {
     }
 
     public Role user() {
-        return roleRepository.findByRole(TypeOfRole.ROLE_USER.toString()).orElse(null);
+        return roleRepository.findByRole(TypeOfRole.ROLE_USER).orElse(null);
     }
 
     public Role admin() {
-        return roleRepository.findByRole(TypeOfRole.ROLE_ADMIN.toString()).orElse(null);
+        return roleRepository.findByRole(TypeOfRole.ROLE_ADMIN).orElse(null);
     }
 }
