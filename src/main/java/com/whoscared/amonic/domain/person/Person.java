@@ -3,6 +3,10 @@ package com.whoscared.amonic.domain.person;
 import com.whoscared.amonic.domain.utils.Activity;
 import com.whoscared.amonic.domain.utils.Office;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 import java.util.List;
@@ -21,26 +25,36 @@ public class Person {
     @JoinColumn(name = "office_id", referencedColumnName = "id")
     private Office office;
 
-    @OneToOne
-    @JoinColumn(name="access_id", referencedColumnName = "id")
-    private Access access;
+    @Column(name = "access")
+    @Enumerated(EnumType.STRING)
+    private TypeOfAccess access;
 
     @Column(name = "email")
+    @Email(message = "Incorrect email")
+    @NotEmpty
     private String email;
     @Column(name = "password")
     private String password;
     @Column(name = "lastname")
+    @NotEmpty
+    @Size(min = 2, max = 50, message = "Lastname cannot be more than 50 characters")
     private String lastname;
     @Column(name = "firstname")
+    @NotEmpty
+    @Size(min = 2, max = 50, message = "Firstname cannot be more than 50 characters")
     private String firstname;
     @Column(name = "birthdate")
+    @NotEmpty
     private Date birthdate;
     @OneToMany(mappedBy = "person")
     private List<Activity> activity;
 
     private String timeOnSystem;
 
-    public Person(){};
+    public Person() {
+    }
+
+    ;
 
     public Long getId() {
         return id;
@@ -114,7 +128,19 @@ public class Person {
         this.activity = activity;
     }
 
+    public TypeOfAccess getAccess() {
+        return access;
+    }
+
+    public void setAccess(TypeOfAccess access) {
+        this.access = access;
+    }
+
     public String getTimeOnSystem() {
         return timeOnSystem;
+    }
+
+    public void setTimeOnSystem(String timeOnSystem) {
+        this.timeOnSystem = timeOnSystem;
     }
 }

@@ -29,10 +29,14 @@ public class SecurityConfig {
                 .authenticationProvider(authProvider)
                 .authorizeRequests(auth ->
                 {
-                    auth.requestMatchers("/*").hasRole("ADMIN");
-                    //auth.requestMatchers("/user/*").hasRole("USER");
-                })
-                .formLogin(Customizer.withDefaults());
+                    auth.requestMatchers("/auth/login", "/auth/registration", "/error").permitAll();
+                    auth.requestMatchers("/admin/*").hasRole("ADMIN");
+                    auth.requestMatchers("/user/*").hasRole("USER");
+                });
+        http.formLogin().loginPage("/auth/login")
+                .loginProcessingUrl("/auth/process_login")
+                .defaultSuccessUrl("/main", true)
+                .failureUrl("/auth/login");
         http
                 .logout().addLogoutHandler(customLogoutHandler);
         return http.build();
