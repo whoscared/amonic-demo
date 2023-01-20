@@ -12,8 +12,10 @@ import java.util.Optional;
 public interface PersonRepository extends JpaRepository<Person, Long> {
     @Override
     Optional<Person> findById(Long aLong);
-    Optional<Person> findByEmail (String email);
+
+    Optional<Person> findByEmail(String email);
 
     List<Person> findAll();
-    List<Person> findAllByOffice (Office office);
+
+    List<Person> findAllByOffice(Office office);
 }

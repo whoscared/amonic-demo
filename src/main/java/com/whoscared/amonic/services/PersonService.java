@@ -21,23 +21,23 @@ public class PersonService {
         this.md5PasswordEncoder = md5PasswordEncoder;
     }
 
-    public Person findByEmail (String email){
+    public Person findByEmail(String email) {
         return personRepository.findByEmail(email).orElse(null);
     }
 
-    public List<Person> findAll(){
+    public List<Person> findAll() {
         return personRepository.findAll();
     }
 
-    public void save (Person person){
+    public void save(Person person) {
         personRepository.save(person);
     }
 
-    public List<Person> findByOffice (Office office){
+    public List<Person> findByOffice(Office office) {
         return personRepository.findAllByOffice(office);
     }
 
-    public void register (Person person){
+    public void register(Person person) {
         person.setPassword(md5PasswordEncoder.encode(person.getPassword()));
         personRepository.save(person);
     }

@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface OfficeRepository extends JpaRepository<Office, Long> {
-    public List<Office> findAll ();
+    public List<Office> findAll();
 
 }

@@ -16,7 +16,7 @@ public class OfficeService {
         this.officeRepository = officeRepository;
     }
 
-    public List<Office> findAll(){
+    public List<Office> findAll() {
         return officeRepository.findAll();
     }
 

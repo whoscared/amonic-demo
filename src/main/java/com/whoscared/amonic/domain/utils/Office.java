@@ -19,7 +19,8 @@ public class Office {
     @Column(name = "contact")
     private String contact;
 
-    public Office(){};
+    public Office() {
+    }
 
     public Long getId() {
         return id;
