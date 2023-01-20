@@ -28,7 +28,8 @@ public class Activity {
     @Column(name = "unsuccessful_logout_reason")
     private UnsuccessfulLogoutReason unsuccessfulLogoutReason;
 
-    public Activity(){};
+    public Activity() {
+    }
 
     public Long getId() {
         return id;

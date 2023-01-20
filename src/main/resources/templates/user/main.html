@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Main Page</title>
+</head>
+<body>
+<p th:text="'Hi ' + ${person.getLastname()} + ' ' + ${person.getFirstname()} + ', Welcome to AMONIC Airlines Automation System'"></p>
+<p th:text="'Time spent on system: ' + ${time}"></p>
+<p th:text="'Number of crashes: ' + ${count}"></p>
+</body>
+</html>
