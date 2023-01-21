@@ -2,6 +2,7 @@ package com.whoscared.amonic.domain.utils;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "country")
 public class Country {

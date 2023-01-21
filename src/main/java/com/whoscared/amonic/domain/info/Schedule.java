@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Date;
 
-public class Schedules {
+public class Schedule {
     private Long id;
     private Date date;
     private Time time;

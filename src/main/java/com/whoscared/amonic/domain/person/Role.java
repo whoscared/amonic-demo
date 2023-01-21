@@ -2,6 +2,7 @@ package com.whoscared.amonic.domain.person;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "role")
 public class Role {
@@ -13,7 +14,8 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private TypeOfRole role;
 
-    public Role(){}
+    public Role() {
+    }
 
     public Long getId() {
         return id;

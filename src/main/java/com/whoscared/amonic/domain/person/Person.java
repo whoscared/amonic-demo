@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 import java.util.List;
 
+
 @Entity
 @Table(name = "person")
 public class Person {
@@ -18,9 +19,10 @@ public class Person {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Role role;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private TypeOfRole role;
     @OneToOne
     @JoinColumn(name = "office_id", referencedColumnName = "id")
     private Office office;
@@ -49,12 +51,9 @@ public class Person {
     @OneToMany(mappedBy = "person")
     private List<Activity> activity;
 
-    //private String timeOnSystem;
 
     public Person() {
     }
-
-    ;
 
     public Long getId() {
         return id;
@@ -64,11 +63,11 @@ public class Person {
         this.id = id;
     }
 
-    public Role getRole() {
+    public TypeOfRole getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(TypeOfRole role) {
         this.role = role;
     }
 
@@ -78,6 +77,14 @@ public class Person {
 
     public void setOffice(Office office) {
         this.office = office;
+    }
+
+    public TypeOfAccess getAccess() {
+        return access;
+    }
+
+    public void setAccess(TypeOfAccess access) {
+        this.access = access;
     }
 
     public String getEmail() {
@@ -128,12 +135,13 @@ public class Person {
         this.activity = activity;
     }
 
-    public TypeOfAccess getAccess() {
-        return access;
-    }
-
-    public void setAccess(TypeOfAccess access) {
-        this.access = access;
+    public int getAge() {
+        Date now = new Date();
+        if (birthdate.getMonth() > now.getMonth()
+                || (birthdate.getMonth() == now.getMonth() && birthdate.getDay() > now.getDay())) {
+            return now.getYear() - birthdate.getYear() - 1;
+        }
+        return now.getYear() - birthdate.getYear();
     }
 
 

@@ -1,6 +1,5 @@
 package com.whoscared.amonic.controllers;
 
-import com.whoscared.amonic.domain.person.Person;
 import com.whoscared.amonic.domain.utils.Office;
 import com.whoscared.amonic.services.ActivityService;
 import com.whoscared.amonic.services.OfficeService;
@@ -28,7 +27,7 @@ public class AdminController {
         this.activityService = activityService;
     }
 
-    @GetMapping()
+    @GetMapping("/main")
     public String main(Model model) {
         model.addAttribute("office", new Office());
         model.addAttribute("personList", personService.findAll());
@@ -36,7 +35,7 @@ public class AdminController {
         return "admin/main";
     }
 
-    @PostMapping()
+    @PostMapping("/main")
     public String chooseOffice(@ModelAttribute("office") Office office,
                                Model model) {
         model.addAttribute("personList", personService.findByOffice(office));
@@ -46,16 +45,16 @@ public class AdminController {
         return "admin/main";
     }
 
-    @GetMapping("/add_user")
-    public String addUser(Model model) {
-        model.addAttribute("person", new Person());
-        model.addAttribute("officeList", officeService.findAll());
-        return "admin/add_user";
-    }
-
-    @PostMapping("/add_user")
-    public String saveUser(@ModelAttribute("person") Person person) {
-        personService.save(person);
-        return "admin/main";
-    }
+//    @GetMapping("/add_user")
+//    public String addUser(Model model) {
+//        model.addAttribute("person", new Person());
+//        model.addAttribute("officeList", officeService.findAll());
+//        return "admin/add_user";
+//    }
+//
+//    @PostMapping("/add_user")
+//    public String saveUser(@ModelAttribute("person") Person person) {
+//        personService.save(person);
+//        return null;
+//    }
 }

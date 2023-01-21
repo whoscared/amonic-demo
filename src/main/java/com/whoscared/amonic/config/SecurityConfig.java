@@ -1,13 +1,12 @@
 package com.whoscared.amonic.config;
 
-import com.whoscared.amonic.security.AuthProviderImpl;
+import com.whoscared.amonic.security.CustomAuthenticationProvider;
+import com.whoscared.amonic.security.CustomAuthenticationSuccessHandler;
 import com.whoscared.amonic.security.CustomLogoutHandler;
 import com.whoscared.amonic.security.Md5PasswordEncoder;
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,14 +15,17 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final AuthProviderImpl authProvider;
+    private final CustomAuthenticationProvider authProvider;
     private final CustomLogoutHandler customLogoutHandler;
 
+    private final CustomAuthenticationSuccessHandler successHandler;
+
     @Autowired
-    public SecurityConfig(AuthProviderImpl authProvider,
-                          CustomLogoutHandler customLogoutHandler) {
+    public SecurityConfig(CustomAuthenticationProvider authProvider,
+                          CustomLogoutHandler customLogoutHandler, CustomAuthenticationSuccessHandler successHandler) {
         this.authProvider = authProvider;
         this.customLogoutHandler = customLogoutHandler;
+        this.successHandler = successHandler;
     }
 
     @Bean
@@ -34,6 +36,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+        //TODO: watch lesson about csrf
         http.csrf().disable();
         http.authenticationProvider(authProvider);
         http
@@ -47,7 +50,7 @@ public class SecurityConfig {
 
         http.formLogin().loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/main", true)
+                .successHandler(successHandler)
                 .failureUrl("/auth/login?error");
         http
                 .logout().addLogoutHandler(customLogoutHandler);

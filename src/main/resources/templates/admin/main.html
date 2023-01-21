@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Main Page</title>
+</head>
+<body>
+<form th:method="post" th:action="@{/admin/main}">
+    <label for="office">Office</label>
+    <select id="office" th:field="*{office}">
+        <option th:each="temp_office : ${officeList}"
+                th:value="${temp_office}"
+                th:text="${temp_office.getTitle()}">type
+        </option>
+    </select>
+    <input type="submit" value="Choose">
+</form>
+
+<div th:each="temp_person : ${personList}">
+
+    <p th:text="${temp_person.getFirstname()} + ' ' + ${temp_person.getLastname()} + ' '
+                + ${temp_person.getAge()} + ' '
+                + ${temp_person.getRole()} + ' '
+                + ${temp_person.getEmail()} + ' '
+                + ${temp_person.getOffice().getTitle()}">
+    </p>
+
+</div>
+
+</body>
+</html>

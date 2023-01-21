@@ -2,6 +2,7 @@ package com.whoscared.amonic.controllers;
 
 import com.whoscared.amonic.domain.person.Person;
 import com.whoscared.amonic.domain.person.TypeOfAccess;
+import com.whoscared.amonic.domain.person.TypeOfRole;
 import com.whoscared.amonic.security.PersonValidator;
 import com.whoscared.amonic.services.OfficeService;
 import com.whoscared.amonic.services.PersonService;
@@ -56,7 +57,7 @@ public class AuthController {
             return "auth/registration";
         }
 
-        person.setRole(roleService.user());
+        person.setRole(TypeOfRole.ROLE_USER);
         person.setAccess(TypeOfAccess.NOT_BLOCKED);
         personService.register(person);
         return "redirect:/auth/login";

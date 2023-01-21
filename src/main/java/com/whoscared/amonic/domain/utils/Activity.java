@@ -2,11 +2,17 @@ package com.whoscared.amonic.domain.utils;
 
 import com.whoscared.amonic.domain.person.Person;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "activity")
 public class Activity {
@@ -28,28 +34,6 @@ public class Activity {
     @Column(name = "unsuccessful_logout_reason")
     private UnsuccessfulLogoutReason unsuccessfulLogoutReason;
 
-    public Activity() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public String getDate() {
-        return date;
-    }
 
     public void setDate(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -72,19 +56,4 @@ public class Activity {
         this.logoutTime = logoutTime.getTime();
     }
 
-    public Time getTimeSpendOnSystem() {
-        return timeSpendOnSystem;
-    }
-
-    public void setTimeSpendOnSystem(Time timeSpendOnSystem) {
-        this.timeSpendOnSystem = timeSpendOnSystem;
-    }
-
-    public UnsuccessfulLogoutReason getUnsuccessfulLogoutReason() {
-        return unsuccessfulLogoutReason;
-    }
-
-    public void setUnsuccessfulLogoutReason(UnsuccessfulLogoutReason unsuccessfulLogoutReason) {
-        this.unsuccessfulLogoutReason = unsuccessfulLogoutReason;
-    }
 }

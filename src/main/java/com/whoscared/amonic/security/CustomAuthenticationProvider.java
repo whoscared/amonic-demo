@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-public class AuthProviderImpl implements AuthenticationProvider {
+public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     private final PersonRepository personRepository;
     private final ActivityRepository activityRepository;
@@ -27,7 +27,7 @@ public class AuthProviderImpl implements AuthenticationProvider {
     private final Md5PasswordEncoder md5PasswordEncoder;
 
     @Autowired
-    public AuthProviderImpl(PersonRepository personRepository, ActivityRepository activityRepository, PersonDetailService personDetailService, Md5PasswordEncoder md5PasswordEncoder) {
+    public CustomAuthenticationProvider(PersonRepository personRepository, ActivityRepository activityRepository, PersonDetailService personDetailService, Md5PasswordEncoder md5PasswordEncoder) {
         this.personRepository = personRepository;
         this.activityRepository = activityRepository;
         this.personDetailService = personDetailService;

@@ -28,21 +28,20 @@ public class UserController {
     }
 
     @GetMapping("/main")
-    public String main (Model model){
+    public String main(Model model) {
         PersonDetails personDetails = (PersonDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Person person = personService.findByEmail(personDetails.getUsername());
-        if (person == null){
+        if (person == null) {
             throw new UsernameNotFoundException("User not found");
         }
         model.addAttribute("person", person);
         Time activity = activityService.getTimeSpendOnSystemLast30days(person);
-        if (activity != null){
+        if (activity != null) {
             model.addAttribute("time", activityService.getTimeSpendOnSystemLast30days(person));
-        }
-        else {
+        } else {
             model.addAttribute("time", "00:00:00");
         }
         model.addAttribute("count", activityService.getCountUnsuccessfulLogout(person));
-        return "/user/main";
+        return "user/main";
     }
 }
