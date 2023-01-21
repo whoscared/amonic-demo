@@ -5,6 +5,68 @@
     <title>Manage Flight Schedules</title>
 </head>
 <body>
+<form th:method="post" th:action="@{/manage_flight_schedules}" th:object="${filter}">
+    <label for="from">From </label>
+    <select id="from" th:field="*{from}">
+        <option th:each="airport_from : ${airportList}"
+                th:value="${airport_from.getId()}"
+                th:text="${airport_from.getIATACode()}">type
+        </option>
+    </select>
+
+    <label for="to">To </label>
+    <select id="to" th:field="*{to}">
+        <option th:each="airport_to : ${airportList}"
+                th:value="${airport_to.getId()}"
+                th:text="${airport_to.getIATACode()}">type
+        </option>
+    </select>
+
+    <br/>
+
+    <div th:if="${error}">
+        <p style="color: brown" th:text="${error}"></p>
+    </div>
+
+    <br/>
+
+    <label for="outbound">Outbound</label>
+    <input type="date" th:field="*{outbound}" id="outbound"/>
+
+    <label for="flight_number">Flight number</label>
+    <input type="text" th:field="*{flightNumber}" id="flight_number">
+
+    <label for="sort">To </label>
+    <select id="sort" th:field="*{sort}">
+        <option th:each="sort_type : ${T(com.whoscared.amonic.utils.SortForFlightSchedules).values()}"
+                th:value="${sort_type}"
+                th:text="${sort_type.toString()}">type
+        </option>
+    </select>
+
+    <input type="submit" value="Apply">
+</form>
+
+<br/>
+
+<div th:if="${scheduleList}">
+    <div th:each="schedule : ${scheduleList}">
+
+        <p th:text="${schedule.getDate()} + ' ' + ${schedule.getFlightTime()} + ' '
+            + ${schedule.getRoute().getDepartureAirport().getIATACode()} + ' '
+            + ${schedule.getRoute().getArrivalAirport().getIATACode()} + ' '
+            + ${schedule.getFlightNumber()} + ' '
+            + ${schedule.getAircraft().getMakeModel()} + ' '
+            + '$' + ${schedule.getEconomyPrice()} + ' '
+            + '$' + ${schedule.getBusinessPrice()} + ' '
+            + '$' + ${schedule.getFirstClassPrice()}">
+
+        </p>
+    </div>
+</div>
+<div th:if="${scheduleList.isEmpty()}">
+    <p style="color: brown">Nothing found for your request</p>
+</div>
 
 </body>
 </html>

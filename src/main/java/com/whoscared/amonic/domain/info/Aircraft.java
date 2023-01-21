@@ -15,7 +15,7 @@ public class Aircraft {
     private String makeModel;
     @Column(name = "total_seats")
     private int totalSeats;
-    @Column(name = "total_seats")
+    @Column(name = "economy_seats")
     private int economySeats;
     @Column(name = "business_seats")
     private int businessSeats;

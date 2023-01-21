@@ -20,7 +20,7 @@ public class Route {
     @Column(name = "distance")
     private double distance;
     @Column(name = "flight_time")
-    private Time flightTime;
+    private int flightTime;
 
     public Route() {
     }
@@ -57,11 +57,11 @@ public class Route {
         this.distance = distance;
     }
 
-    public Time getFlightTime() {
+    public int getFlightTime() {
         return flightTime;
     }
 
-    public void setFlightTime(Time flightTime) {
+    public void setFlightTime(int flightTime) {
         this.flightTime = flightTime;
     }
 }

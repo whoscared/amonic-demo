@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Time;
 import java.util.Date;
 
@@ -17,8 +18,8 @@ public class Schedule {
     @Column(name = "date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
-    @Column(name = "time")
-    private Time time;
+    @Column(name = "flight_time")
+    private Time flightTime;
     @OneToOne
     @JoinColumn(name = "aircraft_id", referencedColumnName = "id")
     private Aircraft aircraft;
@@ -52,12 +53,12 @@ public class Schedule {
         this.date = date;
     }
 
-    public Time getTime() {
-        return time;
+    public Time getFlightTime() {
+        return flightTime;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
+    public void setFlightTime(Time flightTime) {
+        this.flightTime = flightTime;
     }
 
     public Aircraft getAircraft() {
@@ -98,5 +99,12 @@ public class Schedule {
 
     public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;
+    }
+
+    public BigDecimal getBusinessPrice(){
+        return economyPrice.multiply(new BigDecimal("1.35")).setScale(0, RoundingMode.FLOOR);
+    }
+    public BigDecimal getFirstClassPrice(){
+        return getBusinessPrice().multiply(new BigDecimal("1.30")).setScale(0, RoundingMode.FLOOR);
     }
 }

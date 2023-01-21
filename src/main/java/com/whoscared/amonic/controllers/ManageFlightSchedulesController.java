@@ -2,6 +2,7 @@ package com.whoscared.amonic.controllers;
 
 import com.whoscared.amonic.domain.info.Confirmed;
 import com.whoscared.amonic.domain.info.Schedule;
+import com.whoscared.amonic.repositories.AirportRepository;
 import com.whoscared.amonic.services.ScheduleService;
 import com.whoscared.amonic.utils.FlightSchedulesFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Comparator;
@@ -19,35 +21,46 @@ import java.util.List;
 public class ManageFlightSchedulesController {
 
     private final ScheduleService scheduleService;
+    private final AirportRepository airportRepository;
 
     @Autowired
-    public ManageFlightSchedulesController(ScheduleService scheduleService) {
+    public ManageFlightSchedulesController(ScheduleService scheduleService, AirportRepository airportRepository) {
         this.scheduleService = scheduleService;
+        this.airportRepository = airportRepository;
     }
 
     @GetMapping
-    public String manageFlightSchedules(Model model) {
+    public String manageFlightSchedules(@ModelAttribute("error") String error,
+            Model model) {
+        if (error != null){
+            model.addAttribute("error", error);
+        }
         List<Schedule> allSchedules = scheduleService.findAll()
                 .stream().sorted((x, y) -> {
                     if (x.getDate().compareTo(y.getDate()) == 0)
-                        return x.getTime().compareTo(y.getTime());
+                        return x.getFlightTime().compareTo(y.getFlightTime());
                     return x.getDate().compareTo(y.getDate());
                 }).toList();
         model.addAttribute("scheduleList", allSchedules);
+        model.addAttribute("airportList", airportRepository.findAll());
         model.addAttribute("filter", new FlightSchedulesFilter());
         return "schedule/manage_flight_schedules";
     }
 
+    @PostMapping
     public String manageFlightSchedulesFilter(@ModelAttribute("filter") FlightSchedulesFilter filter,
                                               Model model) {
 
-        if (filter.getFrom() != null && filter.getTo() != null
-                && filter.getFrom() == filter.getTo()) {
-            model.addAttribute("error", "Departure airport and arrival airport cannot match");
-            return "redirect:/manage_flight_schedules";
-        }
-
         List<Schedule> allSchedules = scheduleService.findAll();
+        model.addAttribute("airportList", airportRepository.findAll());
+
+        if (filter.getFrom() != null && filter.getTo() != null
+                && filter.getFrom().equals(filter.getTo())) {
+            model.addAttribute("scheduleList", allSchedules);
+            model.addAttribute("error", "Departure airport and arrival airport cannot match");
+            model.addAttribute("filter", new FlightSchedulesFilter());
+            return "schedule/manage_flight_schedules";
+        }
 
         if (filter.getFrom() != null) {
             allSchedules = allSchedules.stream()
@@ -67,9 +80,9 @@ public class ManageFlightSchedulesController {
                     .toList();
         }
 
-        if (filter.getFlight_number() != null) {
+        if (filter.getFlightNumber() != null && !(filter.getFlightNumber().isEmpty())) {
             allSchedules = allSchedules.stream()
-                    .filter(x -> x.getFlightNumber().equals(filter.getFlight_number()))
+                    .filter(x -> x.getFlightNumber().equals(filter.getFlightNumber()))
                     .toList();
         }
 
@@ -87,7 +100,7 @@ public class ManageFlightSchedulesController {
                 case DATE_TIME -> allSchedules = allSchedules.stream()
                         .sorted((x, y) -> {
                             if (x.getDate().compareTo(y.getDate()) == 0)
-                                return x.getTime().compareTo(y.getTime());
+                                return x.getFlightTime().compareTo(y.getFlightTime());
                             return x.getDate().compareTo(y.getDate());
                         }).toList();
                 case ECONOMY_PRICE -> allSchedules = allSchedules.stream()

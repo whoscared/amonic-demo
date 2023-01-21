@@ -10,7 +10,7 @@ public class FlightSchedulesFilter {
     private Airport from;
     private Airport to;
     private Date outbound;
-    private String flight_number;
+    private String flightNumber;
     private SortForFlightSchedules sort;
 
     public FlightSchedulesFilter() {
@@ -36,16 +36,19 @@ public class FlightSchedulesFilter {
         return outbound;
     }
 
-    public void setOutbound(Date outbound) {
-        this.outbound = outbound;
+    public void setOutbound(String outbound) {
+        if (outbound == null || outbound.isEmpty()) {
+            this.outbound = null;
+        } else
+            this.outbound = new Date(outbound);
     }
 
-    public String getFlight_number() {
-        return flight_number;
+    public String getFlightNumber() {
+        return flightNumber;
     }
 
-    public void setFlight_number(String flight_number) {
-        this.flight_number = flight_number;
+    public void setFlightNumber(String flightNumber) {
+        this.flightNumber = flightNumber;
     }
 
     public SortForFlightSchedules getSort() {
