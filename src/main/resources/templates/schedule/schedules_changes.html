@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Apply Schedules Changes</title>
+</head>
+<body>
+
+<div th:if="message">
+  <p th:text="${message}"></p>
+</div>
+
+<form th:method="post" th:action="@{/schedules_changes}" enctype="multipart/form-data">
+  File to upload: <input type="file" name="file">
+  <br />
+  <input type="submit" value="Upload">
+</form>
+
+</body>
+</html>
