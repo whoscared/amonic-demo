@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Unsuccessful Logout</title>
+</head>
+<body>
+<form th:method="post" th:action="@{/unsuccessful_logout_reason}">
+    <label for="reason_text"> Reason : </label>
+    <input type="text" th:field="*{reasonText}" id="reason_text">
+
+    <label for="reason"></label>
+    <select id="reason" th:field="*{reason}">
+        <option th:each="reason_type : ${T(com.whoscared.amonic.domain.utils.UnsuccessfulLogoutReason.values()}"
+                th:value="${reason_type}"
+                th:text="${reason_type.toString()}">type
+        </option>
+    </select>
+
+    <input type="submit" value="Confim">
+</form>
+</body>
+</html>

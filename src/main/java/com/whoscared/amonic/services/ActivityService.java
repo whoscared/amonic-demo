@@ -2,6 +2,7 @@ package com.whoscared.amonic.services;
 
 import com.whoscared.amonic.domain.person.Person;
 import com.whoscared.amonic.domain.utils.Activity;
+import com.whoscared.amonic.domain.utils.UnsuccessfulLogoutReason;
 import com.whoscared.amonic.repositories.ActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,11 @@ public class ActivityService {
 
     public Activity getLastActivityByPerson(Person person) {
         return findByPerson(person).stream().sorted(Comparator.comparing(Activity::getLoginTime)).toList().get(findByPerson(person).size() - 1);
+    }
+
+    public void setUnsuccessfulLogoutReason(Activity activity, UnsuccessfulLogoutReason reason){
+        activity.setUnsuccessfulLogoutReason(reason);
+        edit(activity.getId(), activity);
     }
 
     public void successfulLogout(Long id, Date logoutTime) {

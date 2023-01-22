@@ -2,6 +2,7 @@ package com.whoscared.amonic.security;
 
 import com.whoscared.amonic.domain.person.Person;
 import com.whoscared.amonic.domain.person.TypeOfRole;
+import com.whoscared.amonic.services.ActivityService;
 import com.whoscared.amonic.services.PersonService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,21 +19,27 @@ import java.io.IOException;
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     SimpleUrlAuthenticationSuccessHandler userSuccessUrl = new SimpleUrlAuthenticationSuccessHandler("/user/main");
     SimpleUrlAuthenticationSuccessHandler adminSuccessUrl = new SimpleUrlAuthenticationSuccessHandler("/admin/main");
-
+    SimpleUrlAuthenticationSuccessHandler messageSuccessUrl = new SimpleUrlAuthenticationSuccessHandler("/message/unsuccessful_logout_reason");
     private final PersonService personService;
+    private final ActivityService activityService;
 
     @Autowired
-    public CustomAuthenticationSuccessHandler(PersonService personService) {
+    public CustomAuthenticationSuccessHandler(PersonService personService, ActivityService activityService) {
         this.personService = personService;
+        this.activityService = activityService;
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String username = authentication.getName();
         Person user = personService.findByEmail(username);
-        if (user.getRole().equals(TypeOfRole.ROLE_ADMIN)) {
+        if (activityService.getLastActivityByPerson(user).getUnsuccessfulLogoutReason() == null) {
+            this.messageSuccessUrl.onAuthenticationSuccess(request, response, authentication);
+        } else if (user.getRole().equals(TypeOfRole.ROLE_ADMIN)) {
             this.adminSuccessUrl.onAuthenticationSuccess(request, response, authentication);
+        } else {
+            this.userSuccessUrl.onAuthenticationSuccess(request, response, authentication);
         }
-        this.userSuccessUrl.onAuthenticationSuccess(request, response, authentication);
+
     }
 }
