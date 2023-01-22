@@ -17,5 +17,5 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
     List<Person> findAll();
 
-    List<Person> findAllByOffice(Office office);
+    List<Person> findByOffice (Office office);
 }

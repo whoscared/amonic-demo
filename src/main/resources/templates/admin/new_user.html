@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new user</title>
+</head>
+<body>
+<form th:method="post" th:action="@{/admin/add_user}" th:object="${person}">
+  <label for="email">Email</label>
+  <input type="text" th:field="*{email}" id="email"/>
+  <div style="color: brown" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
+
+  <br/>
+
+  <label for="lastname">Lastname</label>
+  <input type="text" th:field="*{lastname}" id="lastname"/>
+  <div style="color: brown" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">Lastname error</div>
+
+  <br/>
+
+  <label for="firstname">Firstname</label>
+  <input type="text" th:field="*{firstname}" id="firstname"/>
+  <div style="color: brown" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">Firstname error</div>
+
+  <br/>
+
+  <label for="birthdate">Birthdate</label>
+  <input type="text" th:field="*{birthdate}" id="birthdate"/>
+  <div style="color: brown" th:if="${#fields.hasErrors('birthdate')}" th:errors="*{birthdate}">Birthdate error</div>
+
+  <br/>
+
+  <label for="office">Office</label>
+  <select id="office" th:field="*{office}">
+    <option th:each="temp_office : ${officeList}"
+            th:value="${temp_office.getId()}"
+            th:text="${temp_office.getTitle()}">type
+    </option>
+  </select>
+  <div style="color: brown" th:if="${#fields.hasErrors('office')}" th:errors="*{office}">Office error</div>
+
+  <br/>
+
+  <label for="password">Password</label>
+  <input type="password" th:field="*{password}" id="password"/>
+  <div style="color: brown" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
+
+  <input type="submit" value="yesA!">
+</form>
+</body>
+</html>

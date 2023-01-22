@@ -34,7 +34,7 @@ public class PersonService {
     }
 
     public List<Person> findByOffice(Office office) {
-        return personRepository.findAllByOffice(office);
+        return personRepository.findByOffice(office);
     }
 
     public void register(Person person) {
