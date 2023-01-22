@@ -4,6 +4,7 @@ import com.whoscared.amonic.security.CustomAuthenticationProvider;
 import com.whoscared.amonic.security.CustomAuthenticationSuccessHandler;
 import com.whoscared.amonic.security.CustomLogoutHandler;
 import com.whoscared.amonic.security.Md5PasswordEncoder;
+import com.whoscared.amonic.services.PersonDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +20,15 @@ public class SecurityConfig {
     private final CustomLogoutHandler customLogoutHandler;
 
     private final CustomAuthenticationSuccessHandler successHandler;
+    private final PersonDetailService personDetailService;
 
     @Autowired
     public SecurityConfig(CustomAuthenticationProvider authProvider,
-                          CustomLogoutHandler customLogoutHandler, CustomAuthenticationSuccessHandler successHandler) {
+                          CustomLogoutHandler customLogoutHandler, CustomAuthenticationSuccessHandler successHandler, PersonDetailService personDetailService) {
         this.authProvider = authProvider;
         this.customLogoutHandler = customLogoutHandler;
         this.successHandler = successHandler;
+        this.personDetailService = personDetailService;
     }
 
     @Bean
@@ -39,6 +42,7 @@ public class SecurityConfig {
         //TODO: watch lesson about csrf
         http.csrf().disable();
         http.authenticationProvider(authProvider);
+        http.userDetailsService(personDetailService);
         http
                 .authorizeRequests(auth ->
                 {

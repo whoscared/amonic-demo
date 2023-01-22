@@ -6,6 +6,7 @@ import com.whoscared.amonic.repositories.ActivityRepository;
 import com.whoscared.amonic.repositories.PersonRepository;
 import com.whoscared.amonic.services.PersonDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,6 +47,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         }
 
         UserDetails personDetails = personDetailService.loadUserByUsername(username);
+
+        if (!personDetails.isAccountNonLocked()){
+            throw new AccountExpiredException("You are locked!");
+        }
 
         String password = authentication.getCredentials().toString();
         if (!md5PasswordEncoder.matches(password, personDetails.getPassword())) {

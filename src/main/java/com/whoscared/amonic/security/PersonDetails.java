@@ -1,12 +1,14 @@
 package com.whoscared.amonic.security;
 
 import com.whoscared.amonic.domain.person.Person;
+import com.whoscared.amonic.domain.person.TypeOfAccess;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+
 
 public class PersonDetails implements UserDetails {
 
@@ -33,13 +35,12 @@ public class PersonDetails implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public boolean isAccountNonExpired() { return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return person.getAccess().equals(TypeOfAccess.NOT_BLOCKED);
     }
 
     @Override

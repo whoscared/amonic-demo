@@ -73,7 +73,7 @@ public class ActivityService {
         Long allTime = personAllActivity.stream()
                 .filter(x -> x.getTimeSpendOnSystem() != null)
                 .map(x -> x.getTimeSpendOnSystem().getTime())
-                .reduce((y, x) -> y + x - 10800000).orElse(null);
+                .reduce((y, x) -> (y + x) - 10800000).orElse(null);
         if (allTime == null) {
             return null;
         }
