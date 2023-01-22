@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<div th:if="message">
+<div th:if="${message}">
   <p th:text="${message}"></p>
 </div>
 
@@ -15,6 +15,13 @@
   <br />
   <input type="submit" value="Upload">
 </form>
+
+<div th:if="${changesResult != null}">
+    <div th:each="mess : ${changesResult.keySet()}">
+        <p th:text="${mess} + ' ' + ${changesResult.get(mess)}"></p>
+    </div>
+    <p th:text="${changesResult}"></p>
+</div>
 
 </body>
 </html>

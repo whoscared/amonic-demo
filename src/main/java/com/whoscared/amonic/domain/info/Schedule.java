@@ -6,6 +6,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -106,5 +108,33 @@ public class Schedule {
     }
     public BigDecimal getFirstClassPrice(){
         return getBusinessPrice().multiply(new BigDecimal("1.30")).setScale(0, RoundingMode.FLOOR);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Schedule schedule = (Schedule) obj;
+        if (!(new Date(date.getYear(), date.getMonth(), date.getDay()))
+                .equals(new Date(schedule.date.getYear(), schedule.date.getMonth(), schedule.date.getDay()))){
+            return false;
+        }
+        if (!flightTime.equals(schedule.flightTime)){
+            return false;
+        }
+        if (!aircraft.getId().equals(schedule.aircraft.getId())){
+            return false;
+        }
+        if (!route.getId().equals(schedule.route.getId())){
+            return false;
+        }
+        if (!economyPrice.equals(schedule.economyPrice)){
+            return false;
+        }
+        if (!confirmed.equals(schedule.confirmed)){
+            return false;
+        }
+        if (!flightNumber.equals(schedule.flightNumber)){
+            return false;
+        }
+        return true;
     }
 }
