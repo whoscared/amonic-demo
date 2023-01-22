@@ -109,4 +109,12 @@ public class AdminController {
         return "redirect:/admin/main";
 
     }
+
+    @GetMapping("/block/{id}")
+    public String blockUser (@PathVariable("id") Long id){
+        Person blockUser = personService.findById(id);
+        blockUser.setAccess(TypeOfAccess.BLOCKED);
+        personService.save(blockUser);
+        return "redirect:/admin/main";
+    }
 }

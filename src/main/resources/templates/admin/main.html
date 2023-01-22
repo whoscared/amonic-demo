@@ -17,12 +17,23 @@
 </form>
 
 <div th:each="temp_person : ${personList}">
+    <div th:if="${temp_person.isBlock()}" style="background-color: brown">
     <p th:text="${temp_person.getFirstname()} + ' ' + ${temp_person.getLastname()} + ' '
                 + ${temp_person.getAge()} + ' '
                 + ${temp_person.getRole()} + ' '
                 + ${temp_person.getEmail()} + ' '
                 + ${temp_person.getOffice().getTitle()}">
     </p>
+    </div>
+    <div th:if="${!temp_person.isBlock()}" >
+        <p th:text="${temp_person.getFirstname()} + ' ' + ${temp_person.getLastname()} + ' '
+                + ${temp_person.getAge()} + ' '
+                + ${temp_person.getRole()} + ' '
+                + ${temp_person.getEmail()} + ' '
+                + ${temp_person.getOffice().getTitle()}">
+        </p>
+    </div>
+    <a th:href="@{/admin/block/{id}(id = ${temp_person.getId()})}">Block user</a>
 </div>
 
 <form>

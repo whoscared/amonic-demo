@@ -144,5 +144,8 @@ public class Person {
         return now.getYear() - birthdate.getYear();
     }
 
+    public boolean isBlock(){
+        return access.equals(TypeOfAccess.BLOCKED);
+    }
 
 }

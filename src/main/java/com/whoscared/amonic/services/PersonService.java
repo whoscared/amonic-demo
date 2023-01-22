@@ -41,4 +41,10 @@ public class PersonService {
         person.setPassword(md5PasswordEncoder.encode(person.getPassword()));
         personRepository.save(person);
     }
+
+    public Person findById (Long id) {
+        return personRepository.findById(id).orElse(null);
+    }
+
+
 }
