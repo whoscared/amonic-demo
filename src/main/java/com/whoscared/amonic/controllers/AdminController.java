@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -65,12 +62,51 @@ public class AdminController {
                            BindingResult bindingResult, Model model) {
         personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("officeList", officeService.findAll());
-            return "admin/new_user";
+            //model.addAttribute("officeList", officeService.findAll());
+            return "redirect:/admin/new_user";
         }
         person.setRole(TypeOfRole.ROLE_USER);
         person.setAccess(TypeOfAccess.NOT_BLOCKED);
         personService.register(person);
         return "redirect:/admin/main";
+    }
+
+    @GetMapping("/change_role")
+    public String changeRole(@ModelAttribute("error") String error,
+                             Model model) {
+        model.addAttribute("person", new Person());
+        model.addAttribute("officeList", officeService.findAll());
+        return "admin/change_role";
+    }
+
+    @PostMapping("/change_role")
+    public String changeRolePost (@ModelAttribute("person") @Valid Person person,
+                BindingResult bindingResult, Model model) {
+        model.addAttribute("person", new Person());
+        model.addAttribute("officeList", officeService.findAll());
+        if (bindingResult.hasErrors()) {
+            return "admin/change_role";
+        }
+        Person current =  personService.findByEmail(person.getEmail());
+        if (current == null){
+            model.addAttribute("error", "User with this email not found");
+            return "admin/change_role";
+        }
+        else {
+            boolean match = person.getFirstname().equals(current.getFirstname())
+                    && person.getLastname().equals(current.getLastname())
+                    && person.getOffice().getId().equals(current.getOffice().getId());
+            if (match) {
+                current.setRole(person.getRole());
+                personService.save(current);
+            }
+            else {
+                model.addAttribute("error", "User data incorrect");
+                return "admin/change_role";
+            }
+        }
+
+        return "redirect:/admin/main";
+
     }
 }

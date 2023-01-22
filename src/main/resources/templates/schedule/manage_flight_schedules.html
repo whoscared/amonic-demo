@@ -51,8 +51,8 @@
 
 <div th:if="${scheduleList}">
     <div th:each="schedule : ${scheduleList}">
-
-        <p th:text="${schedule.getDate()} + ' ' + ${schedule.getFlightTime()} + ' '
+        <a th:href="@{/schedule/{id}(id = ${schedule.getId()})}" th:text="${schedule.getDate()}"></a>
+        <p th:text="' ' + ${schedule.getFlightTime()} + ' '
             + ${schedule.getRoute().getDepartureAirport().getIATACode()} + ' '
             + ${schedule.getRoute().getArrivalAirport().getIATACode()} + ' '
             + ${schedule.getFlightNumber()} + ' '
@@ -60,7 +60,6 @@
             + '$' + ${schedule.getEconomyPrice()} + ' '
             + '$' + ${schedule.getBusinessPrice()} + ' '
             + '$' + ${schedule.getFirstClassPrice()}">
-
         </p>
     </div>
 </div>

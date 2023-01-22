@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Change Role</title>
+</head>
+<body>
+<form th:method="post" th:action="@{/admin/change_role}" th:object="${person}">
+  <label for="email">Email</label>
+  <input type="text" th:field="*{email}" id="email"/>
+  <div style="color: brown" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
+
+  <br/>
+
+  <label for="lastname">Lastname</label>
+  <input type="text" th:field="*{lastname}" id="lastname"/>
+  <div style="color: brown" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">Lastname error</div>
+
+  <br/>
+
+  <label for="firstname">Firstname</label>
+  <input type="text" th:field="*{firstname}" id="firstname"/>
+  <div style="color: brown" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">Firstname error</div>
+
+  <br/>
+
+  <label for="office">Office</label>
+  <select id="office" th:field="*{office}">
+    <option th:each="temp_office : ${officeList}"
+            th:value="${temp_office.getId()}"
+            th:text="${temp_office.getTitle()}">type
+    </option>
+  </select>
+  <div style="color: brown" th:if="${#fields.hasErrors('office')}" th:errors="*{office}">Office error</div>
+
+  <label for="role">Change role</label>
+  <select id="role" th:field="*{role}">
+    <option th:each="temp_role : ${T(com.whoscared.amonic.domain.person.TypeOfRole).values()}"
+            th:value="${temp_role.toString()}"
+            th:text="${temp_role.toString()}">type
+    </option>
+  </select>
+  <div style="color: brown" th:if="${#fields.hasErrors('office')}" th:errors="*{office}">Office error</div>
+
+  <input type="submit" value="Change role">
+</form>
+
+<div th:if="${!error.isEmpty()}">
+  <p style="color: brown" th:text="${error}"></p>
+</div>
+</body>
+</html>

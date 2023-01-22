@@ -17,7 +17,6 @@
 </form>
 
 <div th:each="temp_person : ${personList}">
-
     <p th:text="${temp_person.getFirstname()} + ' ' + ${temp_person.getLastname()} + ' '
                 + ${temp_person.getAge()} + ' '
                 + ${temp_person.getRole()} + ' '
@@ -28,6 +27,10 @@
 
 <form>
     <input type="button" value="Add user" onClick='location.href="http://localhost:8080/admin/add_user"'>
+</form>
+
+<form>
+    <input type="button" value="Change role" onClick='location.href="http://localhost:8080/admin/change_role"'>
 </form>
 </body>
 </html>
