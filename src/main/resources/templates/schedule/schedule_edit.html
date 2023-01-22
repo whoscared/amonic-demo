@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule Edit</title>
+</head>
+<body>
+<p>Flight route</p>
+<p th:text="'From: ' + ${schedule.getRoute().getDepartureAirport().getIATACode()}"></p>
+<p th:text="'To: ' + ${schedule.getRoute().getArrivalAirport().getIATACode()}"></p>
+<p th:text="'Aircraft: ' + ${schedule.getAircraft().getMakeModel()}"></p>
+
+<form th:method="post" th:action="@{/schedule/id}" th:object="${schedule}">
+    <label>
+        <input th:value="${schedule.getId()}" th:field="*{id}">
+        <input th:value="${schedule.getRoute()}" th:field="*{route}">
+        <input th:value="${schedule.getAircraft()}" th:field="*{aircraft}">
+        <input th:value="${schedule.getConfirmed()}" th:field="*{confirmed}">
+        <input th:value="${schedule.getFlightNumber()}" th:field="*{flightNumber}">
+    </label>
+
+    <label for="date">Date: </label>
+    <input type="date" th:field="*{date}" id="date">
+
+    <label for="time">Time: </label>
+    <input type="text" th:field="*{flightTime}" id="time">
+
+    <label for="price">Economy price: $</label>
+    <input type="text" th:field="*{economyPrice}" id="price">
+
+    <input type="submit" value="Update">
+</form>
+
+<form>
+    <input type="button" value="Cancel" onClick='location.href="http://localhost:8080/manage_flight_schedules"'>
+</form>
+</body>
+</html>

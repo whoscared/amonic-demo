@@ -96,6 +96,9 @@ public class Activity {
     }
 
     public Date getLogoutTime() {
+        if (logoutTime == null){
+            return null;
+        }
         return new Date(logoutTime);
     }
 

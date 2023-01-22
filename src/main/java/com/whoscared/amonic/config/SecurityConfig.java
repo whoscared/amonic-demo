@@ -44,7 +44,7 @@ public class SecurityConfig {
                 {
                     auth.requestMatchers("/auth/login", "/auth/registration", "/error").permitAll();
                     auth.requestMatchers("/main", "/unsuccessful_logout_reason").authenticated();
-                    auth.requestMatchers("/admin/*", "/manage_flight_schedules", "/schedules_changes").hasRole("ADMIN");
+                    auth.requestMatchers("/admin/*", "/manage_flight_schedules", "/schedules_changes", "/schedule/*").hasRole("ADMIN");
                     auth.requestMatchers("/user/*").hasRole("USER");
                 });
 

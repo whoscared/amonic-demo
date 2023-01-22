@@ -5,13 +5,13 @@
     <title>Unsuccessful Logout</title>
 </head>
 <body>
-<form th:method="post" th:action="@{/unsuccessful_logout_reason}">
+<form th:method="post" th:action="@{/unsuccessful_logout}" th:object="${unsuccLog}">
     <label for="reason_text"> Reason : </label>
     <input type="text" th:field="*{reasonText}" id="reason_text">
 
     <label for="reason"></label>
     <select id="reason" th:field="*{reason}">
-        <option th:each="reason_type : ${T(com.whoscared.amonic.domain.utils.UnsuccessfulLogoutReason.values()}"
+        <option th:each="reason_type : ${T(com.whoscared.amonic.domain.utils.UnsuccessfulLogoutReason).values()}"
                 th:value="${reason_type}"
                 th:text="${reason_type.toString()}">type
         </option>

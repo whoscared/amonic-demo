@@ -19,7 +19,7 @@ import java.io.IOException;
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     SimpleUrlAuthenticationSuccessHandler userSuccessUrl = new SimpleUrlAuthenticationSuccessHandler("/user/main");
     SimpleUrlAuthenticationSuccessHandler adminSuccessUrl = new SimpleUrlAuthenticationSuccessHandler("/admin/main");
-    SimpleUrlAuthenticationSuccessHandler messageSuccessUrl = new SimpleUrlAuthenticationSuccessHandler("/message/unsuccessful_logout_reason");
+    SimpleUrlAuthenticationSuccessHandler messageSuccessUrl = new SimpleUrlAuthenticationSuccessHandler("/unsuccessful_logout");
     private final PersonService personService;
     private final ActivityService activityService;
 
@@ -33,7 +33,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String username = authentication.getName();
         Person user = personService.findByEmail(username);
-        if (activityService.getLastActivityByPerson(user).getUnsuccessfulLogoutReason() == null) {
+        if (activityService.getLastActivityByPerson(user).getLogoutTime() == null) {
             this.messageSuccessUrl.onAuthenticationSuccess(request, response, authentication);
         } else if (user.getRole().equals(TypeOfRole.ROLE_ADMIN)) {
             this.adminSuccessUrl.onAuthenticationSuccess(request, response, authentication);
