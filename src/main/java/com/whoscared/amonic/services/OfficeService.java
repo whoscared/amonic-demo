@@ -19,5 +19,8 @@ public class OfficeService {
     public List<Office> findAll() {
         return officeRepository.findAll();
     }
+    public Office findById (Long id){
+        return officeRepository.findById(id).orElse(null);
+    }
 
 }
