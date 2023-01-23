@@ -59,6 +59,7 @@ public class FlightController {
         return "flight/search";
     }
 
+    //передаем выбранные перелеты, чтобы отобразить их на странице
     @PostMapping("/book_flight")
     public String bookFlight(@ModelAttribute("scheduleOutbound") Schedule scheduleOutbound,
                              @ModelAttribute("scheduleReturn") Schedule scheduleReturn,
@@ -68,6 +69,7 @@ public class FlightController {
         model.addAttribute("ticket", new Ticket());
         return "flight/book_flight";
     }
+
 
     @GetMapping("/book_flight")
     public String bookFlightGet(@ModelAttribute("scheduleOutbound") Schedule scheduleOutbound,
@@ -80,6 +82,7 @@ public class FlightController {
         return "flight/book_flight";
     }
 
+    //добавляем пассажирова в список пока не будет выбрана функция подтверждения
     @PostMapping("/book_flight/add_passenger")
     public String addPassenger(@ModelAttribute("scheduleOutbound") Schedule scheduleOutbound,
                                @ModelAttribute("scheduleReturn") Schedule scheduleReturn,
@@ -92,6 +95,7 @@ public class FlightController {
         return "redirect:/flight/book_flight";
     }
 
+    //подтверждаем билеты для всех пассажиров
     @PostMapping("/book_flight/add_passenger/confim")
     public String confimBooking(@ModelAttribute("scheduleOutbound") Schedule scheduleOutbound,
                                 @ModelAttribute("scheduleReturn") Schedule scheduleReturn,
@@ -101,11 +105,22 @@ public class FlightController {
                                 @ModelAttribute("booking") String bookingReference) {
         PersonDetails personDetails = (PersonDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Person person = personService.findByEmail(personDetails.getUsername());
+        //авторизованный пользователь, который оформляем бронирование
         ticket.setUser(person);
+        //номер бронирования для всех будет один
         ticket.setBookingReference(bookingReference);
         for (Passenger temp : passengerList) {
+            //данные пассажира с формы
             ticket.setPassanger(temp);
+            //сохраняем билеты для всех в бд
+            ticket.setSchedule(scheduleOutbound);
             ticketService.save(ticket);
+            if (scheduleReturn != null){
+                //обратный билет
+                //меняем только schedule так как два билета для одного человека
+                ticket.setSchedule(scheduleReturn);
+                ticketService.save(ticket);
+            }
         }
         return "flight/billing_confirmation";
     }
