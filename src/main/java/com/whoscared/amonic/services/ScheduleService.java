@@ -1,6 +1,7 @@
 package com.whoscared.amonic.services;
 
 import com.whoscared.amonic.domain.info.Schedule;
+import com.whoscared.amonic.domain.utils.Flight;
 import com.whoscared.amonic.repositories.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,35 @@ public class ScheduleService {
         current.setFlightTime(flightTime);
         current.setEconomyPrice(economyPrice);
         update(id, current);
+    }
+
+    public List<Schedule> findOutboundByFlight (Flight flight, boolean threeOutbound){
+        List<Schedule> scheduleList = findAll().stream()
+                .filter(x -> flight.getFrom() == null || x.getRoute().getArrivalAirport().getId().equals(flight.getFrom().getId()))
+                .filter(x -> flight.getTo() == null || x.getRoute().getDepartureAirport().getId().equals(flight.getTo().getId()))
+                .toList();
+        if (flight.getOutboundDate() != null){
+            scheduleList = scheduleList.stream()
+                    .filter(x -> (threeOutbound)
+                            ? (x.getDate().getTime() >= (flight.getOutboundDate().getTime() - 259200000L)
+                            && x.getDate().getTime() <= (flight.getOutboundDate().getTime() + 259200000L))
+                            : (x.getDate().equals(flight.getOutboundDate()))).toList();
+        }
+        return scheduleList;
+    }
+
+    public List<Schedule> findReturnByFlight (Flight flight, boolean threeReturn){
+        List<Schedule> scheduleList = findAll().stream()
+                .filter(x -> flight.getFrom() == null || x.getRoute().getDepartureAirport().getId().equals(flight.getFrom().getId()))
+                .filter(x -> flight.getTo() == null || x.getRoute().getArrivalAirport().getId().equals(flight.getTo().getId()))
+                .toList();
+        if (flight.getReturnDate() != null){
+            scheduleList = scheduleList.stream()
+                    .filter(x -> (threeReturn)
+                            ? (x.getDate().getTime() >= (flight.getReturnDate().getTime() - 259200000L)
+                            && x.getDate().getTime() <= (flight.getReturnDate().getTime() + 259200000L))
+                            : (x.getDate().equals(flight.getReturnDate()))).toList();
+        }
+        return scheduleList;
     }
 }
