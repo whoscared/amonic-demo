@@ -76,7 +76,9 @@ public class ManageFlightSchedulesController {
 
         if (filter.getOutbound() != null) {
             allSchedules = allSchedules.stream()
-                    .filter(x -> x.getDate().equals(filter.getOutbound()))
+                    .filter(x -> x.getDate().getYear() == filter.getOutbound().getYear())
+                    .filter(x -> x.getDate().getMonth() == filter.getOutbound().getMonth())
+                    .filter(x -> x.getDate().getDay() == filter.getOutbound().getDay())
                     .toList();
         }
 

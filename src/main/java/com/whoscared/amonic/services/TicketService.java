@@ -7,13 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TicketService {
-    private final TicketService ticketService;
     private final TicketRepository ticketRepository;
 
     @Autowired
-    public TicketService(TicketService ticketService,
-                         TicketRepository ticketRepository) {
-        this.ticketService = ticketService;
+    public TicketService(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
     }
 

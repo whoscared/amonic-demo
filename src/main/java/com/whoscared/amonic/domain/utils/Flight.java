@@ -1,6 +1,7 @@
 package com.whoscared.amonic.domain.utils;
 
 import com.whoscared.amonic.domain.info.Airport;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -11,10 +12,13 @@ public class Flight {
     private Airport to;
     private TypeOfCabin cabinType;
     private boolean returnFlight;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date outboundDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date returnDate;
 
-    public Flight(){}
+    public Flight() {
+    }
 
     public Airport getFrom() {
         return from;

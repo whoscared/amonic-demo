@@ -6,9 +6,101 @@
 </head>
 <body>
 
-<form th:method="post" th:action="/flight">
+<h3>Search parameters:</h3>
+<form th:method="post" th:action="@{/flight}" th:object="${flight}">
 
+    <label for="from">From </label>
+    <select id="from" th:field="*{from}">
+        <option th:each="airport_from : ${airportList}"
+                th:value="${airport_from.getId()}"
+                th:text="${airport_from.getIATACode()}">type
+        </option>
+    </select>
 
+    <label for="to">To </label>
+    <select id="to" th:field="*{to}">
+        <option th:each="airport_to : ${airportList}"
+                th:value="${airport_to.getId()}"
+                th:text="${airport_to.getIATACode()}">type
+        </option>
+    </select>
+
+    <label for="cabinType"></label>
+    <select id="cabinType" th:field="*{cabinType}">
+        <option th:each="cabin_type : ${T(com.whoscared.amonic.domain.utils.TypeOfCabin).values()}"
+                th:value="${cabin_type}"
+                th:text="${cabin_type.toString()}">type
+        </option>
+    </select>
+
+    <label for="returnFlight"></label>
+    <select id="returnFlight" th:field="*{returnFlight}">
+        <option th:value="true">Return flight</option>
+        <option th:value="false">One way</option>
+    </select>
+
+    <label for="outboundDate">Outbound: </label>
+    <input type="text" th:field="*{outboundDate}" id="outboundDate">
+
+    <label for="returnDate">Return: </label>
+    <input type="date" th:field="*{returnDate}" id="returnDate">
+
+    <input type="submit" value="Apply">
+</form>
+
+<form th:method="post" th:action="@{/flight/book_flight}">
+
+    <h3>Outbound flight details:</h3>
+    <form>
+        <label>
+            <input type="checkbox" value="Display three days before and after"
+                   onClick='location.href="http://localhost:8080/flight?threeOutbound=true"'>
+        </label>
+    </form>
+
+    <div th:each="outbound : ${outboundList}">
+        <p th:text="' ' + ${outbound.getFlightTime()} + ' '
+            + ${outbound.getRoute().getDepartureAirport().getIATACode()} + ' '
+            + ${outbound.getRoute().getArrivalAirport().getIATACode()} + ' '
+            + ${outbound.getFlightNumber()} + ' '
+            + ${outbound.getAircraft().getMakeModel()}"></p>
+        <div th:if="${flight != null && flight.getCabinType() != null}">
+            <p th:text="${outbound.getPrice(flight.getCabinType())}"></p>
+        </div>
+        <div th:if="${flight == null || flight.getCabinType() == null}">
+            <p th:text="${outbound.getEconomyPrice()}"></p>
+        </div>
+
+    </div>
+
+    <h3>Return flight details:</h3>
+    <form>
+        <label>
+            <input type="checkbox" value="Display three days before and after"
+                   onClick='location.href="http://localhost:8080/flight?threeReturn=true"'>
+        </label>
+    </form>
+    <div th:if="${returnList == null || !returnList.isEmpty()}">
+        <div th:each="return_t : ${returnList}">
+            <p th:text="' ' + ${return_t.getFlightTime()} + ' '
+            + ${return_t.getRoute().getDepartureAirport().getIATACode()} + ' '
+            + ${return_t.getRoute().getArrivalAirport().getIATACode()} + ' '
+            + ${return_t.getFlightNumber()} + ' '
+            + ${return_t.getAircraft().getMakeModel()} + ' '"></p>
+            <div th:if="${flight != null && flight.getCabinType() != null}">
+                <p th:text="${return_t.getPrice(flight.getCabinType())}"></p>
+            </div>
+            <div th:if="${flight == null || flight.getCabinType() == null}">
+                <p th:text="${return_t.getEconomyPrice()}"></p>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<form>
+    <input type="button" value="Book flight!"
+           onClick='location.href="http://localhost:8080/flight?threeOutbound=true"'/>
 </form>
 
 </body>

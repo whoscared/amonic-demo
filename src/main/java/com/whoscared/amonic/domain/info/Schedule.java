@@ -1,5 +1,6 @@
 package com.whoscared.amonic.domain.info;
 
+import com.whoscared.amonic.domain.utils.TypeOfCabin;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -110,6 +111,21 @@ public class Schedule {
         return getBusinessPrice().multiply(new BigDecimal("1.30")).setScale(0, RoundingMode.FLOOR);
     }
 
+    public BigDecimal getPrice (TypeOfCabin type){
+        switch (type){
+            case ECONOMY -> {
+                return getEconomyPrice();
+            }
+            case BUSINESS -> {
+                return getBusinessPrice();
+            }
+            case FIRST_CLASS -> {
+                return getFirstClassPrice();
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(Object obj) {
         Schedule schedule = (Schedule) obj;
@@ -137,4 +153,6 @@ public class Schedule {
         }
         return true;
     }
+
+
 }
